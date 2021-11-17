@@ -1,0 +1,37 @@
+# FONT Properties
+font.family: sans-serif
+font.size: 20
+
+
+# AXES
+# Leave only the bottom and left frame + make it thicker
+
+axes.linewidth : 4
+axes.labelpad: 10
+axes.spines.top : False
+axes.spines.bottom : True
+axes.spines.left : True
+axes.spines.right : False
+
+# TICKS
+xtick.labelsize : 18
+xtick.color : (0.2,0.2,0.2)
+xtick.direction : out #in
+ytick.labelsize : 18
+ytick.color : (0.2,0.2,0.2)
+ytick.direction : out #in
+xtick.major.size: 8
+xtick.major.width: 4
+ytick.major.size: 8
+ytick.major.width: 4
+
+# LINES
+# axes.prop_cycle : cycler('color', [ '0046b8', '2464c9', '4d87e3', '7899cf', '8ea1bf']) #hex colours
+# lines.linewidth : 1.5
+# lines.markeredgewidth : 0.0
+
+# GRID
+axes.grid : True
+grid.alpha : 0.7
+grid.linestyle : --
+grid.linewidth : 0.6
