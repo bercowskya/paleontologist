@@ -1,4 +1,5 @@
 # Paleontologist
+=======================================
 Read and analyse Mastodon (FIJI Plugin) .csv and .xml data
 
 [Mastodon](https://github.com/fiji/TrackMate3) is a large-scale tracking and track-editing framework for large, multi-view images. It allows you to track cells' dynamics over time and has a very useful and easy to use GUI. In order to use Mastodon, since it works with [Big Data Viewer](https://github.com/bigdataviewer), you need your data to be in HDF5/xml format. 
