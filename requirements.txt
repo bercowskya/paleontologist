@@ -1,9 +1,0 @@
-numpy
-pandas
-ipywidgets
-matplotlib
-scipy
-psutil
-IPython
-untangle
-tqdm
