@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Welcome to paleontologist’s documentation! &#8212; paleontologist 0.0.4 documentation</title>
+    <title>Paleontologist Documentation &#8212; paleontologist 0.0.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -31,10 +31,53 @@
 
           <div class="body" role="main">
             
-  <section id="welcome-to-paleontologist-s-documentation">
-<h1>Welcome to paleontologist’s documentation!<a class="headerlink" href="#welcome-to-paleontologist-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <section id="paleontologist-documentation">
+<h1>Paleontologist Documentation<a class="headerlink" href="#paleontologist-documentation" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="what-is-paleontologist">
+<h1>What is paleontologist?<a class="headerlink" href="#what-is-paleontologist" title="Permalink to this headline">¶</a></h1>
+<p>Paleontologist is a modular python interface to read and analyse Mastodon (FIJI Plugin) .csv and .xml data.</p>
+<p>[Mastodon](<a class="reference external" href="https://github.com/fiji/TrackMate3">https://github.com/fiji/TrackMate3</a>) is a large-scale tracking and track-editing framework for large, multi-view images. It allows you to track cells’ dynamics over time and has a very useful and easy to use GUI. In order to use Mastodon, since it works with [Big Data Viewer](<a class="reference external" href="https://github.com/bigdataviewer">https://github.com/bigdataviewer</a>), you need your data to be in HDF5/xml format.</p>
+<p>As an output, Mastodon provides either a -mamut.xml or a .csv file which containes, among many features, the XYZ coordinates of each cell and the 3D average intensity of the cells. This package provides the  tools to facilitate the organization of the data and enable the easy creation of figures for spatial, temporal and mitotic dynamics of the cells.</p>
+<section id="preparing-your-data-for-tracking">
+<h2>Preparing your data for tracking<a class="headerlink" href="#preparing-your-data-for-tracking" title="Permalink to this headline">¶</a></h2>
+<section id="conversion-to-hdf5-and-xml">
+<h3>[1] Conversion to HDF5 and XML<a class="headerlink" href="#conversion-to-hdf5-and-xml" title="Permalink to this headline">¶</a></h3>
+<p>Before using Mastodon, you need to convert your files in a format that BigData viewer can read. For this, using either [Big Data Viewer](<a class="reference external" href="https://github.com/bigdataviewer">https://github.com/bigdataviewer</a>), [BigStitcher](<a class="reference external" href="https://imagej.net/BigStitcher">https://imagej.net/BigStitcher</a>) or [Multiview Reconstruction](<a class="reference external" href="https://imagej.net/Multiview-Reconstruction">https://imagej.net/Multiview-Reconstruction</a>) from Fiji, you can convert your data into HDF5 and XML. HDF5 will save the raw data whereas the XML file will save the metadata and any transformation performed to the raw data.</p>
+</section>
+<section id="time-registration-or-deconvolution">
+<h3>[2] Time registration or deconvolution<a class="headerlink" href="#time-registration-or-deconvolution" title="Permalink to this headline">¶</a></h3>
+<p>Once your data is in the file format supported by BigDataViewer, there is a range of different Fiji Plugins which perform time registration, deconvolution, stitching… using the XML-HDF5 file format by using BigDataViewer for rendering the data.</p>
+</section>
+</section>
+<section id="cell-tracking-with-mastodon">
+<h2>Cell tracking with Mastodon<a class="headerlink" href="#cell-tracking-with-mastodon" title="Permalink to this headline">¶</a></h2>
+<section id="using-mastodon">
+<h3>[3] Using Mastodon<a class="headerlink" href="#using-mastodon" title="Permalink to this headline">¶</a></h3>
+<p>[Mastodon](<a class="reference external" href="https://github.com/fiji/TrackMate3">https://github.com/fiji/TrackMate3</a>) is a very user-friendly Tracking plugin from Fiji. It allows interactive visualization and navigation of large images thanks to the BigDataViewer. Any file that can be opened in the BigDataViewer will work in Mastodon (BDV HDF5 file format, KLB, Keller-Lab Blocks file format, N5 file format, …).</p>
+<p>With Mastodon you will be able to track large amount of cells in a manual, semi-automatic or automatic way. The outputs from the tracking are two .csv files: name-edges.csv and name-vertices.csv . The first one contains the information obtained from the spots: mean, median and standard deviation of intensity of all the channels; x, y, z coordinates of the centroid of the spots; spots radius; detection quality for each spot; tags and sub-tags for the spots; the individual ID for each spot; the track ID to which each spot corresponds.</p>
+</section>
+</section>
+<section id="data-analysis-using-paleontologist">
+<h2>Data analysis using paleontologist<a class="headerlink" href="#data-analysis-using-paleontologist" title="Permalink to this headline">¶</a></h2>
+<section id="upload-the-data-and-start-exploring-the-notebooks">
+<h3>[4] Upload the data and start exploring the notebooks<a class="headerlink" href="#upload-the-data-and-start-exploring-the-notebooks" title="Permalink to this headline">¶</a></h3>
+<p>Paleontologist is a collection of notebooks which allow the user to organize the cell tracks and perform analysis on the temporal and spatial domain. Under the hood, there are 3 functions called: <code class="docutils literal notranslate"><span class="pre">mastodon_functions.py</span></code>, <code class="docutils literal notranslate"><span class="pre">paleo_functions.py</span></code> and <code class="docutils literal notranslate"><span class="pre">paleo.py</span></code>. Each contains classes to help tidy the cell tracks and perform analysis on these tracks.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mastodon_functions.py</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">paleo_functions.py</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">paleo.py</span></code></p>
+<p>Here is some text explaining some complicated stuff.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s1">&#39;hello&#39;</span>
+<span class="o">&gt;&gt;</span> <span class="n">hello</span>
+</pre></div>
+</div>
+<section id="guide">
+<h4>Guide<a class="headerlink" href="#guide" title="Permalink to this headline">¶</a></h4>
 <div class="toctree-wrapper compound">
 </div>
+</section>
+</section>
+</section>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>

@@ -57,8 +57,11 @@ Guide
    :maxdepth: 3
    :caption: Contents:
    
+   intro
+   modules
+   paleontologist
+   examples
    help
-
 
 Indices and tables
 ==================
