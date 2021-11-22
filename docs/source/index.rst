@@ -57,8 +57,14 @@ Guide
    :maxdepth: 3
    :caption: Contents:
    
+   index
+   intro
+   modules
+   usage
+   paleontologist
+   examples
    help
-
+   api 
 
 Indices and tables
 ==================
@@ -66,3 +72,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
