@@ -3,7 +3,6 @@ import pandas as pd
 import untangle
 import tqdm
 
-
 # Obtain all the features that are in the .xml file which has been generated when the data
 # is converted to .hdf5 using BigDataViewer/BigStitcher/MultiviewReconstruction in Fiji
 class xml_features:

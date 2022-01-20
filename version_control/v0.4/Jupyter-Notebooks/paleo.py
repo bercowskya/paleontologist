@@ -14,7 +14,6 @@ __version__ = "0.1.4"
 
 # Taking into account cell division -  Interactivity with all cells
 
-
 class AllTracks(widgets.HBox):
     """This class is called to plot all the traces so the user can have an idea of how the data looks like.
     :class:
@@ -1307,7 +1306,6 @@ class AllTracksTags(widgets.HBox):
 
         output = widgets.Output()
 
-
         with output:
             self.fig, self.ax = plt.subplots(constrained_layout=True, figsize=(6, 4))
 
@@ -1322,7 +1320,7 @@ class AllTracksTags(widgets.HBox):
         for c in range(self.n_channels):
             for idx in np.unique(self.spots.data_df_sorted['Track ID']):
 
-                i = self.spots.data_df_sorted['Track ID']==idx
+                i = self.spots.data_df_sorted['Track ID'] == idx
 
                 if np.min(self.y[c][i].to_numpy()) < min_val:
                     min_val = np.min(self.y[c][i].to_numpy())
@@ -2275,7 +2273,6 @@ class interactive_traces_channels_division(widgets.HBox):
     # Find the timepoint where the cells divide
     def Diff(self, list1, list2):
         return np.where(np.array(list1)==[item for item in list1 if item not in list2][0])[0]
-
 
 # Phase analysis for individual cells
 
