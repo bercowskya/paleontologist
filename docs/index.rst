@@ -12,6 +12,8 @@ As an output, Mastodon provides either a -mamut.xml or a .csv file which contain
 Preparing your data for tracking
 --------------------------------
 
+The following are some easy steps to prepare your time-lapse for single cell tracking with Mastodon. These steps are performed in open-source software (Fiji Plugins). There are other options to perform processing of the images to obtain good outcomes for tracking so we recomment this is checked before-hand. 
+
 [1] Conversion to HDF5 and XML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Before using Mastodon, you need to convert your files in a format that BigData viewer can read. For this, using either [Big Data Viewer](https://github.com/bigdataviewer), [BigStitcher](https://imagej.net/BigStitcher) or [Multiview Reconstruction](https://imagej.net/Multiview-Reconstruction) from Fiji, you can convert your data into HDF5 and XML. HDF5 will save the raw data whereas the XML file will save the metadata and any transformation performed to the raw data. 
