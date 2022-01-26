@@ -53,8 +53,9 @@ html_theme = 'alabaster'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# Logo
-html_logo = '_static/paleo_logo.png'
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar - the logo 
+html_logo = '../images/paleo_logo.png'
 html_theme_options = {
 	'logo_only' : True,
 	'display_version' : False
