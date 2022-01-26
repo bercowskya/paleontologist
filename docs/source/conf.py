@@ -57,6 +57,6 @@ html_static_path = ['_static']
 # of the sidebar - the logo 
 html_logo = '../images/paleo_logo.png'
 html_theme_options = {
-	'logo_only' : True,
+	#'logo_only' : True, # should be commented if html_theme = alabaster
 	'display_version' : False
 }
