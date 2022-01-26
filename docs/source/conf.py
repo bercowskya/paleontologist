@@ -54,7 +54,7 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 # Logo
-html_logo = 'paleo_logo.png'
+html_logo = '_static/paleo_logo.png'
 html_theme_options = {
 	'logo_only' : True,
 	'display_version' : False
