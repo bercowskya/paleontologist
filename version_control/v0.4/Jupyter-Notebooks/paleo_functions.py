@@ -1,5 +1,8 @@
 import numpy as np
 from scipy import signal, spatial
+import ipywidgets as widgets
+import matplotlib.pyplot as plt
+from IPython.display import display, clear_output
 
 # Smoothing function with a defined window length and type of window
 def smoothing_filter(x, window_len, window='hanning'):
@@ -60,7 +63,6 @@ def smoothing_filter(x, window_len, window='hanning'):
 
 
 # Calculate the peaks using a series of rules:
-#
 class peak_detection:
     def __init__(self, x, window, th_val, th_val_, dist_val, dist_val_, prominence_val, prominence_val_, width_val,
                  width_val_):
@@ -203,3 +205,231 @@ class peak_detection:
             self.cycles_A_plus_plot = [cycles_A_plus[i + 1] for i in range(len(cycles_A_plus))]
 
             self.n_cycles = max(np.unique(cycles_final))
+
+
+# Show all the peaks detected from the parameters chosen by the user
+class peak_detection_plots:
+
+    def __init__(self, tracks, tr_min):
+        """Constructor method
+        """
+        super().__init__()
+
+        self.fig = None
+
+        # Initialize the figure size
+        self.n_cols = 5
+        self.n_cells = tracks.n_tracks_divs
+        self.n_rows = np.ceil((self.n_cells + 1) / self.n_cols)
+        self.size_fig = self.n_rows * (10 / self.n_cols)
+
+        self.tracks = tracks
+        self.tr_min = tr_min
+
+        # Peak detection parameters
+        self.threshold_val = 0  # Threshold value for maxima
+        self.prominence_val = 0  # Prominence value for maxima
+        self.width_val = 0  # Width value for maxima
+        self.distance_val = 1  # Distance value for maxima
+        self.window = 0  # Averaging window size
+
+        # Peak detection parameters chosen by user
+        # ----------------------------------------
+        style = {'description_width': 'initial'}
+        self.window_slider = widgets.IntSlider(value=self.window, min=0, max=100, step=1,
+                                               description='Average window size', layout=dict(width='90%'), style=style)
+        self.threshold_slider = widgets.FloatSlider(value=self.threshold_val, min=0, max=10, step=0.1,
+                                                    description='Threshold', layout=dict(width='90%'), style=style)
+        self.prominence_slider = widgets.FloatSlider(value=self.prominence_val, min=0, max=50, step=0.1,
+                                                     description='Prominence', layout=dict(width='90%'), style=style)
+        self.width_slider = widgets.FloatSlider(value=self.width_val, min=0, max=20, step=0.1, description='Width',
+                                                layout=dict(width='90%'), style=style)
+        self.distance_slider = widgets.FloatSlider(value=self.distance_val, min=1, max=20, step=0.1,
+                                                   description='Distance', layout=dict(width='90%'), style=style)
+        # Plot the results
+        self.plot_button = widgets.Button(description='Plot', disabled=False, button_style='',
+                                          tooltip='Plot the tracks', icon='')
+
+        # Connect callbacks and traits
+        # -----------------------------
+        self.window_slider.observe(self.update_window, 'value')
+        self.threshold_slider.observe(self.update_threshold, 'value')
+        self.prominence_slider.observe(self.update_prominence, 'value')
+        self.width_slider.observe(self.update_width, 'value')
+        self.distance_slider.observe(self.update_distance, 'value')
+
+        controls1 = widgets.VBox([self.window_slider, self.prominence_slider, self.width_slider, self.threshold_slider,
+                                  self.distance_slider, self.plot_button], layout={'width': '80%'})
+
+        # Show the ipywidget
+        display(controls1)
+
+        def plot_on_click(b):
+            self.plot_lines()
+
+        self.plot_button.on_click(plot_on_click)
+
+
+
+    def update_window(self, change):
+        """ Updates the value of the averaging window size."""
+        self.window = change.new
+
+    def update_prominence(self, change):
+        """ Updates the value of the prominence for the peak detection."""
+        self.prominence_val = change.new
+
+    def update_threshold(self, change):
+        """ Updates the value of the threshold for the peak detection."""
+        self.threshold_val = change.new
+
+    def update_distance(self, change):
+        """ Updates the value of the distance for the peak detection."""
+        self.distance_val = change.new
+
+    def update_width(self, change):
+        """ Updates the value of the width for the peak detection."""
+        self.width_val = change.new
+
+    def peak_detection(self, y_signal):
+
+        # Smooth the curve
+        cA = smoothing_filter(y_signal, self.window_slider.value)  # To find Maxima
+        # Peak detection
+        peaks, _ = signal.find_peaks(cA, prominence = self.prominence_slider.value, width = self.width_slider.value,
+                                     distance = self.distance_slider.value, threshold = self.threshold_slider.value)
+        peaks = np.unique(peaks)
+
+        return peaks, cA
+
+    #@self.plot_button.on_click
+    def plot_lines(self):
+        """ Plot all the tracks with the detected peaks using the parameters collected by user"""
+
+        plot_num = 1
+
+        # Initialize the figure size
+        if self.fig is None:
+            self.fig = plt.figure(figsize=[12, self.size_fig])
+        else:
+            self.fig.clf()
+
+        self.peaks_all = []
+        for i in range(self.n_cells):
+            # Update the number of subplots
+            #self.ax = plt.subplot(int(self.n_rows), self.n_cols, plot_num, aspect='auto')
+            self.ax = self.fig.add_subplot(int(self.n_rows), self.n_cols, plot_num, aspect='auto')
+            plot_num += 1
+
+            peaks, cA = self.peak_detection(self.tracks.spots_features['Mean1'][i])
+
+            # Save the peaks
+            self.peaks_all.append(peaks)
+
+            # Initial time-point where the trace starts
+            init_t = self.tracks.spots_features['Frames'][i][0]
+
+            # Plot the smoothed line and the peaks
+            self.ax.plot(np.arange(init_t, len(cA) + init_t) * self.tr_min, cA, color='blue', linewidth=2)
+            self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk', markersize=5)
+
+            t_max = (len(cA) + init_t) * self.tr_min
+            self.ax.set_title('Cell %d' % (i + 1), fontsize=16)
+            self.ax.set_xlim([0, t_max])
+            self.ax.set_ylim([min(cA), max(cA)])
+
+        plt.tight_layout()
+
+
+# Perform manual curation on some peaks
+class manual_peak_curation:
+    """ This class helps performing the manual curation of the peaks previously selected by the user."""
+
+    def __init__(self, tracks, tr_min, curate_cells, window):
+        """Constructor method
+        """
+        super().__init__()
+
+        self.peaks_curated = []
+
+        for i in curate_cells:
+            # Time-points and intensity
+            frames = tracks.spots_features['Frames'][i]
+            intensities = tracks.spots_features['Mean1'][i]
+
+            # Smooth the curve
+            cA = smoothing_filter(intensities, window)  # To find Maxima
+
+            # Initial time-point where the trace starts
+            init_t = frames[0]
+
+            self.fig = plt.figure(figsize=[10, 9])
+
+            # Plot the smoothed line and the peaks
+            plt.plot(np.arange(init_t, len(cA) + init_t) * tr_min, cA,
+                                      color='blue', linewidth=2)
+
+            plt.xticks(fontsize=20)
+            plt.yticks(fontsize=20)
+            plt.xlabel('Time', fontsize=25)
+            plt.ylabel('Intensity', fontsize=25)
+            plt.title(f'Cell # {i:d}' , fontsize=30)
+
+            points = plt.ginput(n=-1, timeout=0, mouse_add=1, mouse_pop=3, mouse_stop=2)
+
+            # Re-arrange data to get peak times only
+            peaks_aux = []
+            for j in range(len(points)):
+                peaks_aux.append(points[j][0])
+
+            float_val = np.round((np.array(peaks_aux)-init_t)/tr_min)
+            self.peaks_curated.append(np.array(list(map(int, float_val))))
+
+            plt.close(self.fig)
+
+        self.peak_time = []
+        self.max_val = []
+        count = 0
+
+
+
+    def curation(tracks, tr_min, curate_cells, window):
+
+        peaks_curated = []
+
+        for i in curate_cells:
+            # Time-points and intensity
+            frames = tracks.spots_features['Frames'][i]
+            intensities = tracks.spots_features['Mean1'][i]
+
+            # Initial time-point where the trace starts
+            init_t = frames[0]
+
+            fig = plt.figure(figsize=[10, 9])
+
+            # Plot the smoothed line and the peaks
+            plt.plot(np.arange(init_t, len(frames) + init_t) * tr_min, intensities,
+                                      color='blue', linewidth=2)
+
+            plt.xticks(fontsize=20)
+            plt.yticks(fontsize=20)
+            plt.xlabel('Time', fontsize=25)
+            plt.ylabel('Intensity', fontsize=25)
+            plt.title('Cell # %d' % (i + 1), fontsize=30)
+
+            points = plt.ginput(n=-1, timeout=0, mouse_add=1, mouse_pop=3, mouse_stop=2)
+            peaks_curated.append(points)
+
+            plt.close(fig)
+
+        return peaks_curated
+
+
+
+
+
+
+
+
+
+

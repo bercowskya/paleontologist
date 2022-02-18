@@ -1,4 +1,6 @@
 .DS_Store
 .ipynb_checkpoints
-*.DS_Store*
-
+BigData/
+__pycache__/
+.idea/
+._*
