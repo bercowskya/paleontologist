@@ -3461,8 +3461,11 @@ class PhaseAnalysis(widgets.HBox):
         # Smoothing window chosen for the peak detection
         self.window = window
 
+        # Only chose the cells with peaks, avoid the excluded cells by user
+        self.peak_inds = [np.size(peaks[i]) for i in range(len(peaks))]
+
         # Number of tracks in total
-        self.N = tracks.n_tracks_divs #len(np.unique(self.spots.data_df_sorted['Track ID'].to_numpy()))
+        self.N = len([i for i, val in enumerate(self.peak_inds) if val > 0]) #len(np.unique(self.spots.data_df_sorted['Track ID'].to_numpy()))
 
         # Initial value for CPU percentage
         self.cpu_per = cpu_percent()
@@ -3495,7 +3498,7 @@ class PhaseAnalysis(widgets.HBox):
         self.chose_alpha = 1
 
         # Define min and max values for X-axis (time)
-        for i in range(self.N):
+        for i in self.peak_inds:
             if np.max(self.x[i]*self.tr_min) > time_val:
                 time_val = np.max(self.x[i]*self.tr_min)
 
@@ -3510,6 +3513,16 @@ class PhaseAnalysis(widgets.HBox):
 
         # Cell track to plot
         self.int_slider = widgets.IntSlider(value=0, min=0, max=self.N-1, step=1, description='Cell #')
+
+        # Order filter for Phase Analysis
+        self.int_slider_order_filter = widgets.IntSlider(value=6, min=1, max=10, step=1, description='Order Filter',
+                                                         layout=dict(width='90%'))
+
+        # Critical frequencies for bandpass filter - phase analysis
+        float_slider_freq = widgets.FloatRangeSlider(value=(0.0002, 0.0006), min=0.0001, max=0.001, step=0.0001,
+                                                     description='Critical Frequencies: ', disabled=False,
+                                                     continuous_update=False, orientation='horizontal', readout=True,
+                                                     readout_format='.0e', style=style)
 
         # Labels for x and y axis
         text_xlabel = widgets.Text(value='', description='X-Label', continuous_update=False, layout=dict(width='90%'))
@@ -3540,11 +3553,13 @@ class PhaseAnalysis(widgets.HBox):
         # Several color pickers according to signals to plot
         signal_desc = ['Original Signal', 'Hilbert Transform', 'Phase']
         initial_colors = ['#000000', '#0000FF', '#FF0000']
-        self.checkbox2_arg_dict = {i: widgets.ColorPicker(value=initial_colors[i],
+        self.color_signals = ['signal', 'hilbert', 'phase']
+        self.checkbox2_arg_dict = {signal: widgets.ColorPicker(value=initial_colors[i],
                                                           description=f'Color for {signal_desc[i]}', style=style,
-                                                          layout=dict(width='90%')) for i in range(3)}
+                                                          layout=dict(width='90%'))
+                                   for i, signal in enumerate(self.color_signals)}
 
-        checkbox2 = widgets.VBox(children=[self.checkbox2_arg_dict[i] for i in range(3)])
+        checkbox2 = widgets.VBox(children=[self.checkbox2_arg_dict[signal] for signal in self.color_signals])
 
         # Float slider to change the alpha of the lines
         style = {'description_width': 'initial'}  # This is so that the description fits in 1 line
@@ -3572,6 +3587,8 @@ class PhaseAnalysis(widgets.HBox):
         interactivity_button.observe(self.update_interactivity, 'value')
         float_slider_alpha.observe(self.update_alpha, 'value')
         float_slider_lw.observe(self.update_lw, 'value')
+        self.int_slider_order_filter.observe(self.update_order_filter, 'value')
+        float_slider_freq.observe(self.update_freq, 'value')
 
         self.x_label = text_xlabel.value
         self.y_label = text_ylabel.value
@@ -3592,6 +3609,9 @@ class PhaseAnalysis(widgets.HBox):
         # First cell to plot is cell 0
         self.chose_cell = 0
 
+        # Order filter for Phase Analysis
+        self.chose_order_filter = 6
+
         # The initial colors to show are some pre-selected by me ;)
         self.chose_color = [initial_colors[i] for i in range(3)]
 
@@ -3605,6 +3625,7 @@ class PhaseAnalysis(widgets.HBox):
         self.chose_alpha = float_slider_alpha.value
         self.chose_lw = float_slider_lw.value
         self.chose_interactivity = interactivity_button.value
+        self.chose_freq = float_slider_freq.value
 
         # Interactive widgets which depend on other widgets
         # -------------------------------------------------
@@ -3613,7 +3634,15 @@ class PhaseAnalysis(widgets.HBox):
         # Change the label from "Run Interact" to a specific one
         out_manual.widget.children[0].description = 'Plot'
 
-        controls1 = widgets.VBox([interactivity_button, self.int_slider], layout={'width': '300px'})
+        # Vertical box for phase parameters
+        phase_params_vbox = widgets.VBox([self.int_slider_order_filter, float_slider_freq])
+
+        # All phase parameters inside an accordion widget - for easy accessibility
+        phase_params_accordion = widgets.Accordion(children=[phase_params_vbox], layout={'width': '300px'})
+        phase_params_accordion.set_title(0, 'Phase Parameters')
+
+        controls1 = widgets.VBox([interactivity_button, self.int_slider, phase_params_accordion],
+                                 layout={'width': '300px'})
         controls2 = widgets.VBox([int_range_slider1, int_range_slider2, checkbox_xaxis, checkbox_yaxis, text_xlabel,
                                   text_ylabel, text_title, float_slider_alpha, float_slider_lw, checkbox2],
                                  layout={'width': '300px'})
@@ -3696,17 +3725,40 @@ class PhaseAnalysis(widgets.HBox):
                 """Plot the lines when the user clicks the Plot button"""
                 self.plot_lines()
 
+    def update_order_filter(self, change):
+        self.chose_order_filter = change.new
+
+        # Re-plot the figure
+        if self.chose_interactivity is True:
+            self.plot_lines()
+        else:
+            @self.plot_button.on_click
+            def plot_on_click():
+                """Plot the lines when the user clicks the Plot button"""
+                self.plot_lines()
+
+    def update_freq(self, change):
+        self.chose_freq = change.new
+
+        # Re-plot the figure
+        if self.chose_interactivity is True:
+            self.plot_lines()
+        else:
+            @self.plot_button.on_click
+            def plot_on_click():
+                """Plot the lines when the user clicks the Plot button"""
+                self.plot_lines()
+
 
     def plot_lines(self):
 
         self.ax.clear()
 
         # Cell to plot, selected by the user
-        cell = self.chose_cell #np.unique(self.spots.data_df_sorted['Track ID'])[self.chose_cell]
+        cell = self.peak_inds[self.chose_cell] #np.unique(self.spots.data_df_sorted['Track ID'])[self.chose_cell]
 
         # Selected colors for each channel by the user
         col = self.chose_color
-        print(col)
 
         # Alpha value
         alpha = self.chose_alpha
@@ -3714,8 +3766,13 @@ class PhaseAnalysis(widgets.HBox):
         # Line-width value
         lw = self.chose_lw
 
+        # Crop if there are peaks detected, otherwise do not crop
+        if np.size(self.peaks[cell]) > 0:
+            y_cropped = self.crop_trace(self.y[cell], self.window, self.peaks[cell])
+        else:
+            y_cropped = paleo_functions.smoothing_filter(self.y[cell], self.window)
+
         # Phase analysis
-        y_cropped = self.crop_trace(self.y[cell], self.window, self.peaks[cell])
         instantaneous_phase_filt, y_filt = self.phase_analysis_calculation(y_cropped, self.T)
 
         x = np.linspace(0.0, len(y_cropped) * self.tr_min, len(y_cropped))
@@ -3811,8 +3868,14 @@ class PhaseAnalysis(widgets.HBox):
         # Sample spacing
         fs = 1/T
 
+        # Order filter
+        order_filter = self.chose_order_filter
+
+        # Critical frequencies for butter-worth filter
+        c_freq = self.chose_freq
+
         # Butter-worth filter
-        b, a = scipy.signal.butter(N=6, Wn=[0.0002, 0.0006], fs=fs, btype='band')
+        b, a = scipy.signal.butter(N=order_filter, Wn=[c_freq[0], c_freq[1]], fs=fs, btype='band')
         y_filt = scipy.signal.filtfilt(b, a, y)
 
         # Hilbert Transform
