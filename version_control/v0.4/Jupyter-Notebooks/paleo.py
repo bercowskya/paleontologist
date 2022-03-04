@@ -12,10 +12,6 @@ from sklearn.cluster import KMeans
 
 __version__ = "0.1.4"
 
-##########################################################################################
-# CELL INSPECTOR #########################################################################
-##########################################################################################
-
 # Taking into account cell division -  Interactivity with all cells
 
 class AllTracks(widgets.HBox):
@@ -3200,9 +3196,9 @@ class PeakDetectionAnalysis(widgets.HBox):
                         init_t = frames_out[div_i][0]
 
                         # Plot the smoothed line and the peaks
-                        self.line, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA,
+                        self.line1, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA,
                                                       color=col[c], linewidth=lw, linestyle=ls[div_i], alpha=alpha)
-                        self.line, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk',
+                        self.line2, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk',
                                                   markersize=10)
                 else:
                     # Peak detection
@@ -3212,9 +3208,9 @@ class PeakDetectionAnalysis(widgets.HBox):
                     init_t = self.x[cell].to_numpy()[0]
 
                     # Plot the smoothed line and the peaks
-                    self.line, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA/self.max_val[c], color=col[c],
+                    self.line1, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA/self.max_val[c], color=col[c],
                                               linewidth=lw, alpha=alpha)
-                    self.line, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks]/self.max_val[c], 'xk', markersize=10)
+                    self.line2, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks]/self.max_val[c], 'xk', markersize=10)
 
             self.fig.canvas.draw_idle()
 
@@ -3238,9 +3234,9 @@ class PeakDetectionAnalysis(widgets.HBox):
                         init_t = frames_out[div_i][0]
 
                         # Plot the smoothed line and the peaks
-                        self.line, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA,
+                        self.line1, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA,
                                                       color=col[c], linewidth=lw, linestyle=ls[div_i], alpha=alpha)
-                        self.line, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk',
+                        self.line2, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk',
                                                   markersize=10)
 
                 else:
@@ -3251,9 +3247,9 @@ class PeakDetectionAnalysis(widgets.HBox):
                     init_t = self.x[cell].to_numpy()[0]
 
                     # Plot the smoothed line and the peaks
-                    self.line, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA, color=col[c],
+                    self.line1, = self.ax.plot(np.arange(init_t, len(cA)+init_t) * self.tr_min, cA, color=col[c],
                                               linewidth=lw, alpha=alpha)
-                    self.line, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk', markersize=10)
+                    self.line2, = self.ax.plot((peaks + init_t) * self.tr_min, cA[peaks], 'xk', markersize=10)
 
             self.fig.canvas.draw_idle()
 

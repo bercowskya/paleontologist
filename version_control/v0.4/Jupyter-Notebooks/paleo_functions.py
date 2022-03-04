@@ -373,6 +373,10 @@ class manual_peak_curation:
 
         self.peaks_curated = []
 
+        # In case the user wants to manually curate all the cells
+        if curate_cells == 'all':
+            curate_cells = np.arange(tracks.n_tracks_divs)
+
         for i in curate_cells:
             # Time-points and intensity
             frames = tracks.spots_features['Frames'][i]
