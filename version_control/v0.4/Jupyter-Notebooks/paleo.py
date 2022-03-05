@@ -4299,15 +4299,6 @@ class Spatial3DAnalaysis(widgets.HBox):
         self.chose_norm = change.new
         self.plot_lines()
 
-    #def update_color(self, **kwargs):
-    #	"""set line color"""
-    #	self.chose_color = []
-    #	for key in kwargs:
-    #		self.chose_color.append(kwargs[key])
-#
-    #	self.plot_lines()
-
-
     def update_xlabel(self, change):
         self.x_label = change.new
         self.ax1.set_xlabel(change.new, fontsize=20)
