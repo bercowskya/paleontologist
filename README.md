@@ -60,62 +60,48 @@ where ```path_xml``` has the directory where the path of the .xml and .hdf5 file
   - coordinate units (microns, inches, etc.)
 
 *```csv_reader```:
-This class obtains all the features from each individual spot as a single unit and then they are rearranged according to their cell track. As a result, we obtain a new object called ```tracks```.
+This class allows you to obtain all the information that comes in the .csv files (-vertices and -edges) that are generated with Mastodon once you have computed the features in Mastodon and saved the results in the .csv format. The file called name-vertices.csv contains all the information concerning each individual spot. The file called name-edges.csv contains all the information concerning the links of each spot. As a result, this class obtains all the features from each individual spot as a single unit and then they are rearranged according to their cell track. As a result, we obtain a new object called ```tracks```.
 
 To call this class use the following line of code:
 ```python
 tracks = csv_reader(path_csv, path_xml)
 ```
+One advantage of using ```csv_reader``` over ```csv_features``` is that it keeps the data as DataFrames and only calls the tracks that the user specifies. Thus, if the dataset is very large, you should always use ```csv_reader``` because the data is kept in a tabular way and even though the access might be slower, it will avoid memory issues.
+
 Using ```tracks``` we can access different features of the data:
-  - ```tracks.data_df_sorted```: Is a ```pandas``` [DataFrame ()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) which contains all the intensity measures (mean, min, max, standard deviation, sum), the spots ID, the frames, the XYZ coordinates, the tags and subtags and the number of links. Most importantly, the DataFrame is arranged in a way such that the tracks have already being arranged by their tracks.  
+  - ```tracks.data_df_sorted```: Is a ```pandas``` [DataFrame( )](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) which contains all the intensity measures (mean, min, max, standard deviation, sum), the spots ID, the frames, the XYZ coordinates, the tags and subtags and the number of links. Most importantly, the DataFrame is arranged in a way such that the tracks have already being arranged by their tracks.  
   
-  - ```edges_df_sorted```:
+  - ```tracks.edges_df_sorted```: Another ```pandas``` [DataFrame( )](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) but this time, it contains the spots ID of the target and source spot. These are the features used to reconstruct the tracks. They are listed here as informative but since the trackes provided are already arranged, there is not obvious use for this dataframe.
+  
+  - ```tracks.tags```: List with all the names of the tags assigned in Mastodon.
+  
+  - ```tracks.sub_tags```: List with all the subtags associated to each tags (listed in ```tracks.tags```) assigned in Mastodon.
 
 * ```csv_features```:
-This class allows you to obtain all the information that comes in the .csv files (-vertices and -edges) that are generated with Mastodon once you have computed the features in Mastodon and saved the results in the .csv format. The file called name-vertices.csv contains all the information concerning each individual spot. The file called name-edges.csv contains all the information concerning the links of each spot. 
+This class is very similar to ```csv_features``` but in this case, the tracks are loaded into memory in the form of a python [dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries). A loading bar will tell you how much time there is left and how fast is the loading of the data progressing. This class is called by another which will arrange the cell tracks.
+
+* ```ordering_tracks```: 
+This class calls the ```csv_features``` to read the .csv and .xml files. Then, the data is arranged by cell track, tags and subtags, and whether they divide or not. 
 
 To call this class use the following line of code:
 ```python
-spots = csv_features(path_csv, path_xml)
+tracks = ordering_tracks(path_csv, path_xml)
 ```
-This line of code saves the output of the class xml_features into the object ```spots```. Therefore, if you write ```spots.``` and then press **Tab** you will get all possible outcomes from this class.
+Using this new object ```tracks``` we can access different data:
 
-The list of the outcomes are:
+  - ```tracks.spots_features```: This dictionary contains the frames, spots IDs, Track IDs, XYZ coordintates and a division ID. This division ID helps you know which cell tracks are siblings. If the DivID is 0, it means that cell track did not divide. The DivID which have the same number means they come from the same parental line. 
 
-* number of links per spot
-* ID for each individual spot
-* ID of the source spot
-* ID of the target spot
-* Frame
-* Spot gaussian-filtered intensity for each channel
-* Standard deviation for each channel
-* Median for each channel
-* X,Y,Z coordinate in the units from the .xml
-* Track ID
-* Total number of tracks
-* Total number of spots
-* Tags and subtags
-
-### Class ```ordering_tracks```:
-This class order tracks acoording to whether they divide or not 
-
-### Class ```xml_reader```:
-
-### Class ```peak_detection```:
-
-### Class ```bulk_peak_analysis```:
-
+  - ```tracks.n_tracks_divs```: Number of total tracks
+  
+  - ```tracks.n_division_tracks```: Number of tracks that have a cell division
+  
 ## Dependencies
+
 numpy 
-
 matplotlib.pylab
-
 pandas
-
 scipy
-
 xml.etree.ElementTree
-
 untangle
 
 
