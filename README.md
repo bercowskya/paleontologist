@@ -1,18 +1,38 @@
 # Paleontologist
 
-Read and analyse Mastodon (FIJI Plugin) .csv and .xml data
+<p align="center">
+ <img src="./version_control/v0.4/Images-Notebook/abstract.png" width="500" align="center">
+</p>
+
+This repository contains the documentation and code for running Paleontologist to allow you to read and analyse Mastodon (FIJI Plugin) .csv and .xml data.
 
 [Mastodon](https://github.com/fiji/TrackMate3) is a large-scale tracking and track-editing framework for large, multi-view images. It allows you to track cells' dynamics over time and has a very useful and easy to use GUI. In order to use Mastodon, since it works with [Big Data Viewer](https://github.com/bigdataviewer), you need your data to be in HDF5/xml format. 
 
 As an output, Mastodon provides either a -mamut.xml or a .csv file which containes, among many features, the XYZ coordinates of each cell and the 3D average intensity of the cells. This package provides the  tools to facilitate the organization of the data and enable the easy creation of figures for spatial, temporal and mitotic dynamics of the cells. 
 
+## Table of contents
+<a id='toc'></a>
+
+- [Installation](#install)
+  - [Anaconda and Jupyter notebooks/lab](#install1)
+  - [Package installations](#install2)
+  - [Run Paleontologist](#install3)
+- [Data preparation](#dataprep)
+  - [Obtaining XMl-HDF5](#dataprep1)
+  - [Obtaining cell tracks from Mastodon](#dataprep2)
+- [Using Paleontologist](#paleo)
+  - [Jupyter Notebooks and User interface](#paleo1)
+  - Classes and functions
+- [Frequently Asked Questions and Issues](#faq)
+
 ## Installation
+<a id='install'></a>
 
 ### [1] Set up your computer using Anaconda and Jupyter notebooks
+<a id='install1'></a>
 Paleontologist comes with several example notebooks and a user interface which runs in Jupyter notebook or lab. Thus, we recomment setting up Anaconda as the python distribution. 
 
 #### Install Anaconda Distribution
-
 Anaconda is available for Linux, Mac and Windows. It comes with Python version 3, conda package manager (with the possibility to download form the 7500 packahes available), Anaconda Prompt (the command shell line) and Anaconda Navigator (the GUI). To download, visit the following [Link](https://www.anaconda.com/products/individual).
 
 If you have any doubts or would like more information on how to get started with Anaconda, visit the following [Link](https://docs.anaconda.com/anaconda/user-guide/getting-started/).
@@ -23,10 +43,10 @@ Once isntalled, we can launch Anaconda Navigator.
 - Linux: From a terminal window type ``anaconda-navigator``.
 
 #### How to use Anaconda and Jupyter Notebooks
-
 There are many tutorials online and we include a notebook called ```0-Installation-Guide.ipynb``` which does not contain code, only text to better explain the basics on how to get started. 
 
 ### [2] Package installations
+<a id='install2'></a>
 For this, open the terminal (in Mac or Linux) or the Anaconda Prompt (in Windows) and type the following lines colored in grey.
 
 First, we will create an environment called ```paleo``` to avoid conflicts with other packages:
@@ -47,6 +67,7 @@ Now that the environment is created, we install the packages by writing the foll
 Now you should be good to go! 
 
 ### [3] Run paleontologist
+<a id='install3'></a>
 
 Any time you want to use Paleonthologist, you can open a terminal/command line/anaconda prompt, access the folder were you have the Paleonthologist folder and then activate the environment.
 
@@ -58,12 +79,14 @@ And then open jupyter notebook, so you can start using the Notebooks.
 
 
 ## Data preparation
-### [1] Conversion to HDF5 and XML
+<a id='dataprep'></a>
 
+### [1] Conversion to HDF5 and XML
+<a id='dataprep1'></a>
 Before using Mastodon, you need to convert your files in a format that BigData viewer can read. For this, using either [Big Data Viewer](https://github.com/bigdataviewer), [BigStitcher](https://imagej.net/BigStitcher) or [Multiview Reconstruction](https://imagej.net/Multiview-Reconstruction) from Fiji, you can convert your data into HDF5 and XML. HDF5 will save the raw data whereas the XML file will save the metadata and any transformation performed to the raw data. 
 
 ### [2] Obtaining cell tracks from Mastodon
-
+<a id='dataprep2'></a>
 [Mastodon](https://github.com/fiji/TrackMate3) is a very user-friendly Tracking plugin from Fiji. It allows interactive visualization and navigation of large images thanks to the BigDataViewer. Any file that can be opened in the BigDataViewer will work in Mastodon (BDV HDF5 file format, KLB, Keller-Lab Blocks file format, N5 file format, ...). 
 
 With Mastodon you will be able to track large amount of cells in a manual, semi-automatic or automatic way. The outputs from the tracking are two .csv files: name-edges.csv and name-vertices.csv . The first one contains the information obtained from the spots: mean, median and standard deviation of intensity of all the channels; x, y, z coordinates of the centroid of the spots; spots radius; detection quality for each spot; tags and sub-tags for the spots; the individual ID for each spot; the track ID to which each spot corresponds. 
@@ -83,14 +106,16 @@ Once the feature calculation is over (all the clocks became green spots), you ca
 Save the .csv file and to run this notebook you will then need to specify the path and the file name to start inspecting the traces. 
 
 ## Using Paleontologist
-
+<a id='paleo'></a>
 Paleontologist is a collection of modular python scripts and notebooks to organize the data coming from cell tracks to later perform the analysis needed. There are python scripts (.py) which will be arranging the data under the hood and the jupyter notebooks (.ipynb) which contain the interactive features and examples on how to call the different functions. 
  
 The python scripts arranging the data are divided into 3:
 
 ### Jupyter Notebooks and User Interface
+<a id='paleo1'></a>
 
 ### Functions and classes
+<a id='paleo2'></a>
 ## ```paleo.py```:
 Inside this package we have all the classes to call the ineractive features of Paleontologist. Among them we have: 
 
@@ -163,15 +188,18 @@ Using this new object ```tracks``` we can access different data:
   - ```tracks.n_tracks_divs```: Number of total tracks
   
   - ```tracks.n_division_tracks```: Number of tracks that have a cell division
-  
-## Dependencies
 
-numpy 
-matplotlib.pylab
-pandas
-scipy
-xml.etree.ElementTree
-untangle
+## FAQ 
+<a id='faq'></a>
+If there is any question related to the source code or you found a bug, please feel free to [open an issue](https://github.com/bercowskya/paleontologist/issues). 
+
+1. *Can I use Paleontologist for other tracking software?*
+At the moment Paleontologist only support .csv files coming from Mastodon. However, Mastodon can read files from [TGMM](https://biii.eu/3d-cell-tracking-using-gaussian-mixture-model-tgmm), [MaMuT](https://imagej.net/plugins/mamut/) and [Simi-BioCell](http://simi.com/en/products/cell-research), which can then be exported as .csv files which can be read by Paleontologist. 
+
+2. * What Mastodon versions are supported by Paleontologist?*
+Versions 19 and above. 
+
+
 
 
 
