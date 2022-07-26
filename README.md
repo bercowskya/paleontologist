@@ -22,7 +22,7 @@ As an output, Mastodon provides either a -mamut.xml or a .csv file which contain
   - [Obtaining cell tracks from Mastodon](#dataprep2)
 - [Using Paleontologist](#paleo)
   - [Jupyter Notebooks and User interface](#paleo1)
-  - Classes and functions
+  - [Classes and functions](#paleo2)
 - [Frequently Asked Questions and Issues](#faq)
 
 ## Installation
@@ -116,7 +116,8 @@ The python scripts arranging the data are divided into 3:
 
 ### Functions and classes
 <a id='paleo2'></a>
-## ```paleo.py```:
+
+#### ```paleo.py```:
 Inside this package we have all the classes to call the ineractive features of Paleontologist. Among them we have: 
 
 * ```AllTracks()```: Allows interactivity to check all ot big groups of cell tracks. The user interface includes all the necessary tools to change the figure axes, limits, size but more over, you can check all cell tracks to have a first approximation of how the data looks like. 
@@ -134,7 +135,7 @@ Inside this package we have all the classes to call the ineractive features of P
 *```Spatial3DAnalysis()```: This class allows the user to visualize the data using the 3 possible combinations of planes (XY, XZ and YZ) in order to check how the cells move over time. 
 
 
-### ```mastodon_functions.py```:
+#### ```mastodon_functions.py```:
 This script contains 5 classes that will help you arrange the cell tracks obtained from Mastodon. 
 
 *```xml_features():```
@@ -188,6 +189,10 @@ Using this new object ```tracks``` we can access different data:
   - ```tracks.n_tracks_divs```: Number of total tracks
   
   - ```tracks.n_division_tracks```: Number of tracks that have a cell division
+
+#### ```paleo_functions.py```:
+In this script there are 3 classes and one function which are described below. 
+
 
 ## FAQ 
 <a id='faq'></a>
