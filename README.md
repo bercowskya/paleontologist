@@ -114,6 +114,11 @@ The python scripts arranging the data are divided into 3:
 ### Jupyter Notebooks and User Interface
 <a id='paleo1'></a>
 
+#### 1-Mastodon_Tracks-CellInspecto.ipynb
+<p align="center">
+ <video src="./version_control/v0.4/Images-Notebook/AllTracks_edit.mp4" width="400" align="center"/> 
+</p>
+
 ### Functions and classes
 <a id='paleo2'></a>
 
