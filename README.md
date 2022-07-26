@@ -10,6 +10,7 @@ This repository contains the documentation and code for running Paleontologist t
 
 As an output, Mastodon provides either a -mamut.xml or a .csv file which containes, among many features, the XYZ coordinates of each cell and the 3D average intensity of the cells. This package provides the  tools to facilitate the organization of the data and enable the easy creation of figures for spatial, temporal and mitotic dynamics of the cells. 
 
+
 ## Table of contents
 <a id='toc'></a>
 
@@ -116,8 +117,10 @@ The python scripts arranging the data are divided into 3:
 
 #### 1-Mastodon_Tracks-CellInspecto.ipynb
 <p align="center">
- <video src="./version_control/v0.4/Images-Notebook/AllTracks_edit.mp4" width="400" align="center"/> 
+ <video src='https://user-images.githubusercontent.com/47277993/181015411-65381e7d-339c-4f0e-b945-32ba711ec479.mov' controls='controls' style='max'/> 
 </p>
+
+
 
 ### Functions and classes
 <a id='paleo2'></a>
