@@ -10,7 +10,7 @@ This repository contains the documentation and code for running Paleontologist t
 
 As an output, Mastodon provides either a -mamut.xml or a .csv file which containes, among many features, the XYZ coordinates of each cell and the 3D average intensity of the cells. This package provides the  tools to facilitate the organization of the data and enable the easy creation of figures for spatial, temporal and mitotic dynamics of the cells. 
 
-
+---
 ## Table of contents
 <a id='toc'></a>
 
@@ -26,15 +26,17 @@ As an output, Mastodon provides either a -mamut.xml or a .csv file which contain
   - [Classes and functions](#paleo2)
 - [Frequently Asked Questions and Issues](#faq)
 
+---
 ## Installation
 <a id='install'></a>
+:top: To go back to the table of contents, click [HERE](#toc).
 
 ### [1] Set up your computer using Anaconda and Jupyter notebooks
 <a id='install1'></a>
 Paleontologist comes with several example notebooks and a user interface which runs in Jupyter notebook or lab. Thus, we recomment setting up Anaconda as the python distribution. 
 
 #### Install Anaconda Distribution
-Anaconda is available for Linux, Mac and Windows. It comes with Python version 3, conda package manager (with the possibility to download form the 7500 packahes available), Anaconda Prompt (the command shell line) and Anaconda Navigator (the GUI). To download, visit the following [Link](https://www.anaconda.com/products/individual).
+Anaconda is available for Linux, Mac and Windows. It comes with Python version 3, conda package manager (with the possibility to download from the 7500 packages available), Anaconda Prompt (the command shell line) and Anaconda Navigator (the GUI). To download, visit the following [Link](https://www.anaconda.com/products/individual).
 
 If you have any doubts or would like more information on how to get started with Anaconda, visit the following [Link](https://docs.anaconda.com/anaconda/user-guide/getting-started/).
 
@@ -78,9 +80,10 @@ And then open jupyter notebook, so you can start using the Notebooks.
 
 ``jupyter notebook`` 
 
-
+---
 ## Data preparation
 <a id='dataprep'></a>
+:top: To go back to the table of contents, click [HERE](#toc).
 
 ### [1] Conversion to HDF5 and XML
 <a id='dataprep1'></a>
@@ -106,8 +109,11 @@ Once the feature calculation is over (all the clocks became green spots), you ca
 
 Save the .csv file and to run this notebook you will then need to specify the path and the file name to start inspecting the traces. 
 
+---
 ## Using Paleontologist
 <a id='paleo'></a>
+:top: To go back to the table of contents, click [HERE](#toc).
+
 Paleontologist is a collection of modular python scripts and notebooks to organize the data coming from cell tracks to later perform the analysis needed. There are python scripts (.py) which will be arranging the data under the hood and the jupyter notebooks (.ipynb) which contain the interactive features and examples on how to call the different functions. 
  
 The python scripts arranging the data are divided into 3:
@@ -115,10 +121,23 @@ The python scripts arranging the data are divided into 3:
 ### Jupyter Notebooks and User Interface
 <a id='paleo1'></a>
 
-#### 1-Mastodon_Tracks-CellInspecto.ipynb
+#### ```1-Mastodon_Tracks-CellInspector.ipynb``` 
+
+In this notebook we will import the .csv files obtained from Mastodon to have a first look on how the cell tracks look like. You will be able to observe the traces all together and play with the different channels and normalize the traces to have a better channel-to-channel comparison. Moreover, you will be able to observe the dynamics of each individual trace. 
+
+This video shows an example of the user interface to play with all the cell traces. To call this function and use the interactivity options, you can write the following line of code:
+
+```python
+paleo.AllTracks(path_csv, path_xml, tr_min)
+```
+Where ```path_csv``` is the .csv file obtained as an output from Mastodon, ```path_xml``` is the .xml file generated when converting the data into HDF5 of N5 and finally, ```tr_min``` is the temporal resolution in minutes. 
+
 <p align="center">
  <video src='https://user-images.githubusercontent.com/47277993/181015411-65381e7d-339c-4f0e-b945-32ba711ec479.mov' controls='controls' style='max'/> 
 </p>
+
+
+#### ```2-Mastodon_Tracks-CellDivision.ipynb``` 
 
 
 
@@ -201,16 +220,18 @@ Using this new object ```tracks``` we can access different data:
 #### ```paleo_functions.py```:
 In this script there are 3 classes and one function which are described below. 
 
+---
+## FAQ
+:top: To go back to the table of contents, click [HERE](#toc).
 
-## FAQ 
 <a id='faq'></a>
 If there is any question related to the source code or you found a bug, please feel free to [open an issue](https://github.com/bercowskya/paleontologist/issues). 
 
-1. *Can I use Paleontologist for other tracking software?*
-At the moment Paleontologist only support .csv files coming from Mastodon. However, Mastodon can read files from [TGMM](https://biii.eu/3d-cell-tracking-using-gaussian-mixture-model-tgmm), [MaMuT](https://imagej.net/plugins/mamut/) and [Simi-BioCell](http://simi.com/en/products/cell-research), which can then be exported as .csv files which can be read by Paleontologist. 
+1. **Can I use Paleontologist for other tracking software?**
+ > At the moment Paleontologist only support .csv files coming from Mastodon. However, Mastodon can read files from [TGMM](https://pubmed.ncbi.nlm.nih.gov/25042785/), [MaMuT](https://imagej.net/plugins/mamut/) and [Simi-BioCell](http://simi.com/en/products/cell-research), which can then be exported as .csv files which can be read by Paleontologist. 
 
-2. * What Mastodon versions are supported by Paleontologist?*
-Versions 19 and above. 
+2. **What Mastodon versions are supported by Paleontologist?**
+ > Versions 19 and above. 
 
 
 
