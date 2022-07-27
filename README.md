@@ -138,7 +138,44 @@ Where ```path_csv``` is the .csv file obtained as an output from Mastodon, ```pa
 
 
 #### ```2-Mastodon_Tracks-CellDivision.ipynb``` 
+In this notebook you can inspect neighboring cells given a certain distance that you can chose. Moreover, we plot with different colors the dividing cells and the time of division.
 
+For example, the video below shows the user interface which allows you to visualize a neighbourhood of cells (given a certain distance) colored in grey and the dividing cells (in colors) with their division times (dashed black vertical line).
+
+```python 
+paleo.IndividualTracksNeighbours(path_xml, path_csv, tr_min, tracks)
+```
+
+<p align="center">
+ <video src='https://user-images.githubusercontent.com/47277993/181226509-e7e8d2fd-49bb-4ce8-9e2d-7869621f7538.mov' controls='controls' style='max'/> 
+</p>
+
+#### ```3-Mastodon_Tracks-TemporalAnalysis.ipynb``` 
+
+In this notebook we will import the .csv files obtained from Mastodon and we perform peack detection analysis by using both automatic analysis and a manual curation. Moreoever, we can obtain the phase of the oscillatory traces. In the following lines, a more detailed example of the types of analysis that can be done in this notebook.
+
+- Peak Detection:
+  - Automatic cell by cell: You can check cell by cell how the peak detection algorithm works. For this, you can tune the parameters for peak detection and check how each individual cell behaves (even sibling cells!).
+  - Automatic all cells: Here you can then plot all the cells with the detected peaks one next to each other. Each of these cells will have an ID associated which can be observed in the title. Use this for later manual curation or cell exclusion.  
+  - Manual curation: By selecting the ID of the cells, you can either exclude them from the analysis or chose them for manual curation. A new window will open where you can manually select the peaks.
+- Phase Analysis: Tune the parameters and perform phase analysis using the Hilbert Transform.
+
+The following video shows an example of the peak detection for each individual cell by chosing the parameters in the user interface. 
+
+<p align="center">
+ <video src='https://user-images.githubusercontent.com/47277993/181228673-0be464a1-860b-4061-87ef-b253e9abe682.mov' controls='controls' style='max'/> 
+</p>
+
+#### ```4-Mastodon_Tracks-SpatialAnalys.ipynb``` 
+
+In this notebook, we can observe the spatial analysis of the tracked cells and also, some tissue level dynamics. 
+- 3D Spatial analysis: Here we show the 3 possible views (XY, XZ and YZ) of the coordinates of the cells. The video belows shows an example of the user interface.     
+
+- Project cells into line-of-interest (LOI): Use the segmented tool from Fiji in order to obtain a segmented line which will be used to project the cells' coordinates and observe their dynamics over a certain reference frame. 
+
+<p align="center">
+ <video src='https://user-images.githubusercontent.com/47277993/181229213-3b7c3385-5d0f-44c2-bcbe-e8246519a96e.mov' controls='controls' style='max'/> 
+</p>
 
 
 ### Functions and classes
@@ -159,13 +196,13 @@ Inside this package we have all the classes to call the ineractive features of P
 
 * ```PhaseAnalysis()```: This class applies a Butterworth filter (band-pass), a Hilbert transform and finally, calculates the phase of each individual cell.
 
-*```Spatial3DAnalysis()```: This class allows the user to visualize the data using the 3 possible combinations of planes (XY, XZ and YZ) in order to check how the cells move over time. 
+* ```Spatial3DAnalysis()```: This class allows the user to visualize the data using the 3 possible combinations of planes (XY, XZ and YZ) in order to check how the cells move over time. 
 
 
 #### ```mastodon_functions.py```:
 This script contains 5 classes that will help you arrange the cell tracks obtained from Mastodon. 
 
-*```xml_features():```
+*```xml_features()```:
 Gets as input the .xml file from the initial conversion using either BigdataViewer, Bigstitcher or Multiview reconstruction to convert the files into HDF5/XML. 
 This class can be called by using the following line of code:
 
