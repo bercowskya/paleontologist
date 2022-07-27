@@ -202,23 +202,16 @@ Inside this package we have all the classes to call the ineractive features of P
 #### ```mastodon_functions.py```:
 This script contains 5 classes that will help you arrange the cell tracks obtained from Mastodon. 
 
-*```xml_features()```:
+* ```xml_features()```:
 Gets as input the .xml file from the initial conversion using either BigdataViewer, Bigstitcher or Multiview reconstruction to convert the files into HDF5/XML. 
 This class can be called by using the following line of code:
 
 ```python
 fts = xml_features(path_xml)
 ```
-where ```path_xml``` has the directory where the path of the .xml and .hdf5 files are. This line of code saves the output of the class xml_features into the object ```fts```. Therefore, if you write ```fts.``` and then press **Tab** you will get all possible outcomes from this class. The list of these outcomes are:
-  - channels
-  - dimensions
-  - width
-  - height
-  - number of slices
-  - x,y,z pixel size
-  - coordinate units (microns, inches, etc.)
+where ```path_xml``` has the directory where the path of the .xml and .hdf5 files are. This line of code saves the output of the class xml_features into the object ```fts```. Therefore, if you write ```fts.``` and then press **Tab** you will get all possible outcomes from this class. The list of these outcomes are: channels, dimensions, width, height, number of slices, XYZ pixel size, coordinate units (microns, inches, etc.)
 
-*```csv_reader```:
+* ```csv_reader```:
 This class allows you to obtain all the information that comes in the .csv files (-vertices and -edges) that are generated with Mastodon once you have computed the features in Mastodon and saved the results in the .csv format. The file called name-vertices.csv contains all the information concerning each individual spot. The file called name-edges.csv contains all the information concerning the links of each spot. As a result, this class obtains all the features from each individual spot as a single unit and then they are rearranged according to their cell track. As a result, we obtain a new object called ```tracks```.
 
 To call this class use the following line of code:
