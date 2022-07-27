@@ -10,3 +10,4 @@ jupyter
 untangle
 sklearn
 ipywidgets
+read_roi
