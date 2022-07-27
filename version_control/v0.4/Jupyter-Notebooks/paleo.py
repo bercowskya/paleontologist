@@ -1676,6 +1676,7 @@ class IndividualTracksNeighbours(widgets.HBox):
         self.plot_lines()
 
         # callback functions
+
     def update(self, change):
         self.chose_cell = change.new
         self.plot_lines()

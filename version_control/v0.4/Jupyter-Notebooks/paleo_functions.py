@@ -362,6 +362,7 @@ class peak_detection_plots:
             # Save the peaks
             self.peaks_all.append(peaks)
 
+
 # Perform manual curation on some peaks
 class manual_peak_curation:
     """ This class helps performing the manual curation of the peaks previously selected by the user."""
