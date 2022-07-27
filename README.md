@@ -1,5 +1,7 @@
 # Paleontologist
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/bercowskya/paleontologist/HEAD)
+
 <p align="center">
  <img src="./version_control/v0.4/Images-Notebook/abstract.png" width="500" align="center">
 </p>
